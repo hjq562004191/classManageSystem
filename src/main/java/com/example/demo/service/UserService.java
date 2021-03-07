@@ -25,4 +25,12 @@ public interface UserService {
     ResultModel adminLogin(String phone,String passWord);
 
     ResultModel changePassWord(String phoneNumber,String code,String passWord,String sedPassWord);
+
+    ResultModel getStudent(String phone);
+
+    ResultModel getStudentList(int page,int pageSize);
+    
+    ResultModel changeStudent(Student student);
+    
+    ResultModel deleteStudent(int id);
 }

@@ -1,6 +1,7 @@
 package com.example.demo.interceptor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@CrossOrigin
 public class FileTypeInterceptor extends HandlerInterceptorAdapter {
 
     private final String ALLOW_FILE = "jpg,gif,png";

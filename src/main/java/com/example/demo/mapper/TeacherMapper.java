@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface TeacherMapper {
-    @Insert("insert into teacher(teacher_name, college, phone_number,teacher_pass_word)" +
-            " values(#{teacherName}, #{college}, #{phoneNumber}, #{teacherPassWord})")
+    @Insert("insert into teacher(teacher_name, phone_number,teacher_pass_word)" +
+            " values(#{teacherName}, #{phoneNumber}, #{teacherPassWord})")
     int addTeacher(Teacher teacher);
 
     @Delete("DELETE FROM teacher WHERE id = #{id}")

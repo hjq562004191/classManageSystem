@@ -17,11 +17,11 @@ public class Student implements Serializable {
     private String studentPassWord;  //密码
 
 
-    public int getStudentId() {
+    public int getId() {
         return id;
     }
 
-    public void setStudentId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -6,6 +6,7 @@ import com.example.demo.utils.JWTUtils;
 import com.example.demo.utils.JedisUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import java.util.Map;
  */
 @SuppressWarnings("all")
 @Service
+@CrossOrigin
 public class TokenInterceptor implements HandlerInterceptor {
 
     private Logger logger = Logger.getLogger(TokenInterceptor.class);

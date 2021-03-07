@@ -6,6 +6,7 @@ import com.example.demo.model.ResultModel;
 import com.example.demo.service.FaceService;
 import com.example.demo.utils.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @create 2021/3/2 21:38
  */
 @Service
+@CrossOrigin
 public class FaceServiceImpl implements FaceService {
     @Override
     public ResultModel addFace(String image, Student student) {

@@ -13,14 +13,17 @@ import com.example.demo.utils.JWTUtils;
 import com.example.demo.utils.JedisUtils;
 import com.example.demo.utils.PhoneUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author JQiang
  * @create 2021/3/3 9:24
  */
 @Service
+@CrossOrigin
 public class UserServiceImpl implements UserService {
 
     @Resource
@@ -104,8 +107,8 @@ public class UserServiceImpl implements UserService {
         if (mPassword.equals(passWord)) {
             String token = "";
             try {
-                token = JWTUtils.createToken(stu.getStudentId(), stu.getStudentName(), stu.getPhoneNumber());
-                JedisUtils.setToken(String.valueOf(stu.getStudentId()), token, 7);
+                token = JWTUtils.createToken(stu.getId(), stu.getStudentName(), stu.getPhoneNumber());
+                JedisUtils.setToken(String.valueOf(stu.getId()), token, 7);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResultBuilder.getFailure(-1, "创建token错误");
@@ -167,4 +170,49 @@ public class UserServiceImpl implements UserService {
     public ResultModel changePassWord(String phoneNumber, String code, String passWord, String sedPassWord) {
         return null;
     }
+
+    @Override
+    public ResultModel getStudent(String phoneNumber) {
+        Student stu = studentMapper.findStudentByPhone(phoneNumber);
+        System.out.println(stu.toString());
+        if (stu == null) {
+            return ResultBuilder.getFailure(-1, "用户不存在");
+        }
+        return ResultBuilder.getSuccess(stu,"获取成功");
+    }
+
+    @Override
+    public ResultModel getStudentList(int page,int pageSize) {
+        List<Student> stus = studentMapper.getStudentList(pageSize,(page-1)*pageSize);
+        for (Student s :
+                stus) {
+            System.out.println(s.toString());
+        }
+        if (stus == null) {
+            return ResultBuilder.getFailure(-1, "获取学生列表失败");
+        }
+        return ResultBuilder.getSuccess(stus,stus.size()+"");
+    }
+    @Override
+    public ResultModel changeStudent(Student student) {
+        int result = studentMapper.changeStudent(student);
+        if (result != 1) {
+            return ResultBuilder.getFailure(-1, "更新学生信息失败");
+        }
+        return ResultBuilder.getSuccess(0,"更新学生信息成功");
+    }
+
+    @Override
+    public ResultModel deleteStudent(int id) {
+        Student stu = studentMapper.findStudentById(id);
+        if (stu == null) {
+            return ResultBuilder.getFailure(-1, "用户不存在");
+        }
+        boolean result = studentMapper.deleteStudent(id);
+        if (result) {
+            return ResultBuilder.getFailure(-1, "删除学生信息失败");
+        }
+        return ResultBuilder.getSuccess(0,"删除学生信息成功");
+    }
+
 }

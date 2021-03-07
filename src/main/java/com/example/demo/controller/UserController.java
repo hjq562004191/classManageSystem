@@ -88,4 +88,24 @@ public class UserController {
         return userService.adminLogin(phone, passWord);
     }
 
+    @RequestMapping(value = "/user/getStudent", method = POST)
+    public ResultModel getStudent(String phoneNumber)  {
+        return userService.getStudent(phoneNumber);
+    }
+
+    @RequestMapping(value = "/user/getStudentList", method = POST)
+    public ResultModel getStudentList(int page,int pageSize)  {
+        return userService.getStudentList(page, pageSize);
+    }
+
+    @RequestMapping(value = "/user/changeStudent", method = POST)
+    public ResultModel changeStudent(Student student)  {
+        return userService.changeStudent(student);
+    }
+
+    @RequestMapping(value = "/user/deleteStudent", method = POST)
+    public ResultModel deleteStudent(int id)  {
+        return userService.deleteStudent(id);
+    }
+
 }

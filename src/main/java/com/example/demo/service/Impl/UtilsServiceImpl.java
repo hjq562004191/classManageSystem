@@ -5,8 +5,10 @@ import com.example.demo.model.ResultBuilder;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.UtilsService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
+@CrossOrigin
 public class UtilsServiceImpl implements UtilsService {
     @Override
     public ResultModel notLoginIn() {

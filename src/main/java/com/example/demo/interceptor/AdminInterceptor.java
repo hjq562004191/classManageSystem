@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.example.demo.utils.JWTUtils;
 import com.example.demo.utils.JedisUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author Qiang
  */
 @Service
+@CrossOrigin
 public class AdminInterceptor implements HandlerInterceptor {
 
     private String[] interceptUrl = {"/register", "/login", "/util"};

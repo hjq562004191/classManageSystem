@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.domain.Student;
+import com.example.demo.mapper.StudentMapper;
 import com.example.demo.model.ResultBuilder;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.UtilsService;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -21,10 +25,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UtilsController {
     @Autowired
     UtilsService utilsService;
-
+    @Resource
+    StudentMapper studentMapper;
 
     @RequestMapping(value = "/getPhoneCode", method = POST)
     public ResultModel getphonecode(String phoneNumber) {
+        Student stu = studentMapper.findStudentByPhone(phoneNumber);
+        //检测账号是否存在
+        if (stu != null){
+            return ResultBuilder.getFailure(-1,"账号已存在");
+        }
         String code = null;
         code = PhoneUtil.getVerificationCode(phoneNumber);
         if (code == null){
