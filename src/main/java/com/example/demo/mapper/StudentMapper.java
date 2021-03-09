@@ -17,8 +17,9 @@ public interface StudentMapper {
     @ResultMap("studentMap")
     int addStudent(Student student);
 
-    @Delete("DELETE FROM student WHERE id = #{id}")
-    boolean deleteStudent(int id);
+    @Delete("DELETE from student WHERE phone_number = #{phoneNumber}")
+    @ResultMap("studentMap")
+    boolean deleteStudent(String phoneNumber);
 
     @Select("select * from student where id = #{id}")
     @ResultMap("studentMap")
@@ -42,8 +43,8 @@ public interface StudentMapper {
     )
     Student findStudentByPhone(String phone);
 
-    @Update("UPDATE FROM student SET student_name = #{studentName}, " +
-            "class_num = #{classNum},student_num = #{studentNum},phone_number = #{phoneNumber} WHERE id = #{id}")
+    @Update("UPDATE student SET student_name = #{studentName},student_num = #{studentNum}," +
+            "class_num = #{classNum},phone_number = #{phoneNumber} WHERE id = #{id}")
     @ResultMap("studentMap")
     int changeStudent(Student student);
 

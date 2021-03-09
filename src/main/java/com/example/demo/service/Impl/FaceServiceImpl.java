@@ -1,5 +1,8 @@
 package com.example.demo.service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.demo.domain.Face.Root;
+import com.example.demo.domain.Face.User_list;
 import com.example.demo.domain.Student;
 import com.example.demo.model.ResultBuilder;
 import com.example.demo.model.ResultModel;
@@ -18,19 +21,23 @@ import java.util.Map;
 @Service
 @CrossOrigin
 public class FaceServiceImpl implements FaceService {
+
+
     @Override
-    public ResultModel addFace(String image, Student student) {
+    public ResultModel addFace(String image, String phone) {
+        image = image.substring(22,image.length()-1);
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add";
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("image", image);
             map.put("group_id", "group_test");
-            map.put("user_id", student.getStudentName());
-            map.put("user_info", student.toString());
+            map.put("user_id", phone);
+            map.put("user_info", phone);
             map.put("liveness_control", "NORMAL");
             map.put("image_type", "BASE64");
-            map.put("quality_control", "LOW");
+            map.put("quality_control", "NORMAL");
+
 
             String param = GsonUtils.toJson(map);
 
@@ -38,16 +45,20 @@ public class FaceServiceImpl implements FaceService {
             String accessToken = GetFaceToken.getAuth();
 
             String result = HttpUtil.post(url, accessToken, "application/json", param);
-            System.out.println(result);
-            return ResultBuilder.getSuccess(result);
+            JSONObject Str = JSONObject.parseObject(result);
+            Root face = JSONObject.toJavaObject(Str, Root.class);
+            if (face.getError_code() == 0) {
+                return ResultBuilder.getSuccess(result);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultBuilder.getFailure(-1,"添加人脸失败");
+        return ResultBuilder.getFailure(-1, "添加人脸失败");
     }
 
     @Override
-    public ResultModel searchFace(String searchImage) {
+    public ResultModel searchFace(String searchImage, String phone) {
+        searchImage = searchImage.substring(22,searchImage.length()-1);
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
         try {
@@ -56,7 +67,7 @@ public class FaceServiceImpl implements FaceService {
             map.put("liveness_control", "NORMAL");
             map.put("group_id_list", "group_test");
             map.put("image_type", "BASE64");
-            map.put("quality_control", "LOW");
+            map.put("quality_control", "NORMAL");
 
             String param = GsonUtils.toJson(map);
 
@@ -64,11 +75,29 @@ public class FaceServiceImpl implements FaceService {
             String accessToken = GetFaceToken.getAuth();
 
             String result = HttpUtil.post(url, accessToken, "application/json", param);
-            System.out.println(result);
-            return ResultBuilder.getSuccess(result);
+
+            //匹配度
+            double score = 0;
+            JSONObject Str = JSONObject.parseObject(result);
+            Root face = JSONObject.toJavaObject(Str, Root.class);
+            if (face.getResult() == null){
+                return ResultBuilder.getFailure(-1, "请添加清楚人脸照片");
+            }
+            for (User_list user :
+                    face.getResult().getUser_list()) {
+                if (user.getUser_id().equals(phone) && user.getScore() > 80.0){
+                    score = user.getScore();
+                }
+            }
+            System.out.println(searchImage);
+            if (score > 80.00) {
+                return ResultBuilder.getSuccess(result);
+            } else {
+                return ResultBuilder.getFailure(-1, "人脸相似度低");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultBuilder.getFailure(-1,"对比人脸失败");
+        return ResultBuilder.getFailure(-1, "对比人脸失败");
     }
 }

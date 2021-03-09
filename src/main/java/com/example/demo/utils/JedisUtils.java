@@ -21,4 +21,8 @@ public class JedisUtils {
         String token = jedis.get(String.valueOf(id));
         return token;
     }
+
+    public static boolean isExists(String id){
+        return jedis.exists(id);
+    }
 }

@@ -14,9 +14,9 @@ public interface UserService {
     //code是短信验证码
     ResultModel studentRegister(Student student);
 
-    ResultModel teacherRegister(Teacher teacher,String code);
+    ResultModel teacherRegister(Teacher teacher);
 
-    ResultModel adminRegister(Admin admin, String code);
+    ResultModel adminRegister(Admin admin);
 
     ResultModel studentLogin(String phone,String passWord);
 
@@ -28,9 +28,13 @@ public interface UserService {
 
     ResultModel getStudent(String phone);
 
+    ResultModel getTeacher(String phone);
+
     ResultModel getStudentList(int page,int pageSize);
     
     ResultModel changeStudent(Student student);
+
+    ResultModel changeTeacher(Teacher teacher);
     
-    ResultModel deleteStudent(int id);
+    ResultModel deleteStudent(String phoneNumber);
 }

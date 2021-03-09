@@ -19,6 +19,9 @@ public class ResultBuilder {
     public static ResultModel getSuccess(Object object, String message) {
         return new ResultModel(0, object, message);
     }
+    public static ResultModel getSuccess(int id,Object object, String message) {
+        return new ResultModel(id, object, message);
+    }
     public static ResultModel getFailure(int id, Object object, String message) {
         return new ResultModel(id, object, message);
     }

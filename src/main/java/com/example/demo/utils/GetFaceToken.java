@@ -23,10 +23,16 @@ public class GetFaceToken {
      * }
      */
     public static String getAuth() {
+
+        if (JedisUtils.isExists("access_token")) {
+            String access_token = JedisUtils.getToken("access_token");
+            return access_token;
+        }
         // 官网获取的 API Key 更新为你注册的
         String clientId = "LUpGvoAleWTMLHe3E1lMcOIP";
         // 官网获取的 Secret Key 更新为你注册的
         String clientSecret = "S7VIi4HEmKLbB1Nhk687sq7Uj2GNgjhF";
+
         return getAuth(clientId, clientSecret);
     }
 
@@ -73,6 +79,9 @@ public class GetFaceToken {
             System.err.println("result:" + result);
             JSONObject jsonObject = new JSONObject(result);
             String access_token = jsonObject.getString("access_token");
+
+            //access_token存入redis
+            JedisUtils.setToken("access_token",access_token,30);
             return access_token;
         } catch (Exception e) {
             System.err.printf("获取token失败！");

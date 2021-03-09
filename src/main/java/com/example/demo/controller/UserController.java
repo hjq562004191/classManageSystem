@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/teacherRegister", method = POST)
-    public ResultModel teacherRegister(@Valid Teacher teacher, String code, BindingResult bindingResult) {
+    public ResultModel teacherRegister(@Valid Teacher teacher, BindingResult bindingResult) {
         // 如果注册的信息有问题
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
@@ -62,7 +62,7 @@ public class UserController {
                 return ResultBuilder.getFailure(-1, message + ":" + fieldError.getDefaultMessage());
             }
         }
-        return userService.teacherRegister(teacher,code);
+        return userService.teacherRegister(teacher);
     }
 
     @RequestMapping(value = "/user/teacherLogin", method = POST)
@@ -70,7 +70,7 @@ public class UserController {
         return userService.teacherLogin(phone, passWord);
     }
     @RequestMapping(value = "/user/adminRegister", method = POST)
-    public ResultModel adminRegister(@Valid Admin admin, String code, BindingResult bindingResult) {
+    public ResultModel adminRegister(@Valid Admin admin, BindingResult bindingResult) {
         // 如果注册的信息有问题
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
@@ -80,7 +80,7 @@ public class UserController {
                 return ResultBuilder.getFailure(-1, message + ":" + fieldError.getDefaultMessage());
             }
         }
-        return userService.adminRegister(admin,code);
+        return userService.adminRegister(admin);
     }
 
     @RequestMapping(value = "/user/adminLogin", method = POST)
@@ -93,6 +93,11 @@ public class UserController {
         return userService.getStudent(phoneNumber);
     }
 
+    @RequestMapping(value = "/user/getTeacher", method = POST)
+    public ResultModel getTeacher(String phoneNumber)  {
+        return userService.getTeacher(phoneNumber);
+    }
+
     @RequestMapping(value = "/user/getStudentList", method = POST)
     public ResultModel getStudentList(int page,int pageSize)  {
         return userService.getStudentList(page, pageSize);
@@ -103,9 +108,14 @@ public class UserController {
         return userService.changeStudent(student);
     }
 
+    @RequestMapping(value = "/user/changeTeacher", method = POST)
+    public ResultModel changeTeacher(Teacher teacher)  {
+        return userService.changeTeacher(teacher);
+    }
+
     @RequestMapping(value = "/user/deleteStudent", method = POST)
-    public ResultModel deleteStudent(int id)  {
-        return userService.deleteStudent(id);
+    public ResultModel deleteStudent(String phoneNumber)  {
+        return userService.deleteStudent(phoneNumber);
     }
 
 }

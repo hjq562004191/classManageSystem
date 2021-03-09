@@ -10,6 +10,24 @@ public class Teacher implements Serializable {
 
     private String teacherName;  //姓名
 
+    private String college;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
     private String phoneNumber;  //电话
 
     private String teacherPassWord;  //密码
@@ -55,5 +73,17 @@ public class Teacher implements Serializable {
 
     public void setClassHour(int classHour) {
         this.classHour = classHour;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", teacherName='" + teacherName + '\'' +
+                ", college='" + college + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", teacherPassWord='" + teacherPassWord + '\'' +
+                ", classHour=" + classHour +
+                '}';
     }
 }

@@ -39,59 +39,43 @@ public class UserServiceImpl implements UserService {
     public ResultModel studentRegister(Student student) {
         Student stu = studentMapper.findStudentByPhone(student.getPhoneNumber());
         //检测账号是否存在
-        if (stu == null){
+        if (stu == null) {
             int result = studentMapper.addStudent(student);
-            if (result == 0){
-                return ResultBuilder.getFailure(-1,"添加学生失败");
+            if (result == 0) {
+                return ResultBuilder.getFailure(-1, "添加学生失败");
             }
-        }else {
-            return ResultBuilder.getFailure(-1,"账号已存在");
-        }
-        return ResultBuilder.getSuccess(0,"注册成功");
-    }
-
-    @Override
-    public ResultModel teacherRegister(Teacher teacher, String code) {
-        Teacher tea = teacherMapper.findTeacherByPhone(teacher.getPhoneNumber());
-        //检测账号是否存在
-        if (tea == null){
-            try {
-                if (PhoneUtil.judgeCodeIsTrue(code,teacher.getPhoneNumber())) {
-                    int result = teacherMapper.addTeacher(teacher);
-                    if (result == 0){
-                        return ResultBuilder.getFailure(-1,"添加教师失败");
-                    }
-                }else {
-                    return ResultBuilder.getFailure(-1, "手机验证码错误");
-                }
-            } catch (Exception e) {
-                return ResultBuilder.getFailure(-1, "抛出异常");
-            }
-        }else {
-            return ResultBuilder.getFailure(-1,"账号已存在");
+        } else {
+            return ResultBuilder.getFailure(-1, "账号已存在");
         }
         return ResultBuilder.getSuccess("注册成功");
     }
 
     @Override
-    public ResultModel adminRegister(Admin admin, String code) {
+    public ResultModel teacherRegister(Teacher teacher) {
+        Teacher tea = teacherMapper.findTeacherByPhone(teacher.getPhoneNumber());
+        //检测账号是否存在
+        if (tea == null) {
+            int result = teacherMapper.addTeacher(teacher);
+            if (result == 0) {
+                return ResultBuilder.getFailure(-1, "添加教师失败");
+            }
+        } else {
+            return ResultBuilder.getFailure(-1, "账号已存在");
+        }
+        return ResultBuilder.getSuccess("注册成功");
+    }
+
+    @Override
+    public ResultModel adminRegister(Admin admin) {
         Admin adm = adminMapper.findAdminByPhone(admin.getPhoneNumber());
         //检测账号是否存在
-        if (adm == null){
-            try {
-                if (PhoneUtil.judgeCodeIsTrue(code,admin.getPhoneNumber())) {
-                    int result = adminMapper.addAdmin(admin);
-                    if (result == 0){
-                        return ResultBuilder.getFailure(-1,"注册管理员失败");
-                    }
-                }else {
-                    return ResultBuilder.getFailure(-1, "手机验证码错误");
-                }
-            } catch (Exception e) {
-                return ResultBuilder.getFailure(-1, "抛出异常");
+        if (adm == null) {
+            int result = adminMapper.addAdmin(admin);
+            if (result == 0) {
+                return ResultBuilder.getFailure(-1, "注册管理员失败");
             }
-        }else {
-            return ResultBuilder.getFailure(-1,"账号已存在");
+        } else {
+            return ResultBuilder.getFailure(-1, "账号已存在");
         }
         return ResultBuilder.getSuccess("注册成功");
     }
@@ -174,45 +158,60 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultModel getStudent(String phoneNumber) {
         Student stu = studentMapper.findStudentByPhone(phoneNumber);
-        System.out.println(stu.toString());
         if (stu == null) {
             return ResultBuilder.getFailure(-1, "用户不存在");
         }
-        return ResultBuilder.getSuccess(stu,"获取成功");
+        return ResultBuilder.getSuccess(stu, "获取成功");
     }
 
     @Override
-    public ResultModel getStudentList(int page,int pageSize) {
-        List<Student> stus = studentMapper.getStudentList(pageSize,(page-1)*pageSize);
-        for (Student s :
-                stus) {
-            System.out.println(s.toString());
+    public ResultModel getTeacher(String phoneNumber) {
+        Teacher teacher = teacherMapper.findTeacherByPhone(phoneNumber);
+        if (teacher == null) {
+            return ResultBuilder.getFailure(-1, "用户不存在");
         }
+        return ResultBuilder.getSuccess(teacher, "获取成功");
+    }
+
+    @Override
+    public ResultModel getStudentList(int page, int pageSize) {
+        List<Student> stus = studentMapper.getStudentList(pageSize, (page - 1) * pageSize);
         if (stus == null) {
             return ResultBuilder.getFailure(-1, "获取学生列表失败");
         }
-        return ResultBuilder.getSuccess(stus,stus.size()+"");
+        return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
     }
+
     @Override
     public ResultModel changeStudent(Student student) {
+        System.out.println(student.toString());
         int result = studentMapper.changeStudent(student);
         if (result != 1) {
             return ResultBuilder.getFailure(-1, "更新学生信息失败");
         }
-        return ResultBuilder.getSuccess(0,"更新学生信息成功");
+        return ResultBuilder.getSuccess(0, "更新学生信息成功");
     }
 
     @Override
-    public ResultModel deleteStudent(int id) {
-        Student stu = studentMapper.findStudentById(id);
+    public ResultModel changeTeacher(Teacher teacher) {
+        int result = teacherMapper.changeTeacher(teacher);
+        if (result != 1) {
+            return ResultBuilder.getFailure(-1, "更新学生信息失败");
+        }
+        return ResultBuilder.getSuccess(0, "更新学生信息成功");
+    }
+
+    @Override
+    public ResultModel deleteStudent(String phoneNumber) {
+        Student stu = studentMapper.findStudentByPhone(phoneNumber);
         if (stu == null) {
             return ResultBuilder.getFailure(-1, "用户不存在");
         }
-        boolean result = studentMapper.deleteStudent(id);
-        if (result) {
+        boolean result = studentMapper.deleteStudent(phoneNumber);
+        if (!result) {
             return ResultBuilder.getFailure(-1, "删除学生信息失败");
         }
-        return ResultBuilder.getSuccess(0,"删除学生信息成功");
+        return ResultBuilder.getSuccess(0, "删除学生信息成功");
     }
 
 }

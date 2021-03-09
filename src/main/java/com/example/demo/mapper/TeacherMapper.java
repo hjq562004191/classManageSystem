@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.domain.Student;
 import com.example.demo.domain.Teacher;
 import org.apache.ibatis.annotations.*;
 
@@ -26,8 +27,14 @@ public interface TeacherMapper {
     @Select("select * from teacher where phone_number = #{phone}")
     @Results(id = "teacherMap",value = {@Result(column = "id" ,property = "id"),
             @Result(column = "teacher_name" ,property = "teacherName"),
+            @Result(column = "college" ,property = "college"),
             @Result(column = "phone_number" ,property = "phoneNumber"),
             @Result(column = "teacher_pass_word" ,property = "teacherPassWord")}
     )
     Teacher findTeacherByPhone(String phone);
+
+    @Update("UPDATE teacher SET teacher_name = #{teacherName}," +
+            "college = #{college},phone_number = #{phoneNumber} WHERE id = #{id}")
+    @ResultMap("teacherMap")
+    int changeTeacher(Teacher teacher);
 }
