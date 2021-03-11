@@ -25,7 +25,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private Logger logger = Logger.getLogger(TokenInterceptor.class);
     // 设置不拦截的路径
-    private static final String[] IGNORE_URL = {"/user", "Form", "/utils", "/none", "/photo",
+    private static final String[] IGNORE_URL = {"/user", "/class", "Form", "/utils", "/none", "/photo",
             "/audio", "/video", "/register", "/admin","/judgephone","/getphonecode","/face"};
 
     @Override

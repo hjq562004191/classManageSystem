@@ -4,6 +4,7 @@ import com.example.demo.domain.Admin;
 import com.example.demo.domain.Student;
 import com.example.demo.domain.Teacher;
 import com.example.demo.mapper.AdminMapper;
+import com.example.demo.mapper.ClassMapper;
 import com.example.demo.mapper.StudentMapper;
 import com.example.demo.mapper.TeacherMapper;
 import com.example.demo.model.ResultBuilder;
@@ -11,11 +12,12 @@ import com.example.demo.model.ResultModel;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.JWTUtils;
 import com.example.demo.utils.JedisUtils;
-import com.example.demo.utils.PhoneUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     AdminMapper adminMapper;
+
+    @Resource
+    ClassMapper classMapper;
 
     @Override
     public ResultModel studentRegister(Student student) {
@@ -181,6 +186,15 @@ public class UserServiceImpl implements UserService {
         }
         return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
     }
+    @Override
+    public ResultModel getStudentListClass(int page, int pageSize,String phone) {
+        Student student = studentMapper.findStudentByPhone(phone);
+        List<Student> stus = studentMapper.getStudentListClass(pageSize, (page - 1) * pageSize,student.getClassName());
+        if (stus == null) {
+            return ResultBuilder.getFailure(-1, "获取学生列表失败");
+        }
+        return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
+    }
 
     @Override
     public ResultModel changeStudent(Student student) {
@@ -213,5 +227,24 @@ public class UserServiceImpl implements UserService {
         }
         return ResultBuilder.getSuccess(0, "删除学生信息成功");
     }
+
+    @Override
+    public ResultModel getTeacherClass(int page, int pageSize, String phone) {
+        Teacher teacher = teacherMapper.findTeacherByPhone(phone);
+        System.out.println(teacher.getClassName());
+        if (teacher.getClassName().contains(";")) {
+            String[] strings = teacher.getClassName().split(";");
+        List<Student> result = new LinkedList<>();
+        for (String className :
+                strings) {
+            List<Student> stus = studentMapper.getStudentListClass(pageSize, (page - 1) * pageSize,className);
+            result.addAll(stus);
+        }
+        return ResultBuilder.getSuccess(result.size(),result,"获取教师学生成功");
+        }
+        List<Student> stus = studentMapper.getStudentListClass(pageSize, (page - 1) * pageSize,teacher.getClassName());
+        return ResultBuilder.getSuccess(stus.size(),stus,"获取教师学生成功");
+    }
+
 
 }

@@ -23,6 +23,8 @@ public class JedisUtils {
     }
 
     public static boolean isExists(String id){
-        return jedis.exists(id);
+        JedisUtils.init();
+        boolean b= jedis.exists(id);
+        return b;
     }
 }

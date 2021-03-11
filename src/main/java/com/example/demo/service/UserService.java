@@ -31,10 +31,14 @@ public interface UserService {
     ResultModel getTeacher(String phone);
 
     ResultModel getStudentList(int page,int pageSize);
+
+    ResultModel getStudentListClass(int page,int pageSize,String phone);
     
     ResultModel changeStudent(Student student);
 
     ResultModel changeTeacher(Teacher teacher);
     
     ResultModel deleteStudent(String phoneNumber);
+
+    ResultModel getTeacherClass(int page, int pageSize, String phone);
 }

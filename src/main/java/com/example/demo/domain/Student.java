@@ -11,7 +11,7 @@ public class Student implements Serializable {
     private int id;
 
     private String studentName;  //姓名
-    private String classNum;  //班级
+    private String className;  //班级
     private String studentNum; //学号
     private String phoneNumber;  //电话
     private String studentPassWord;  //密码
@@ -33,13 +33,6 @@ public class Student implements Serializable {
         this.studentName = studentName;
     }
 
-    public String getClassNum() {
-        return classNum;
-    }
-
-    public void setClassNum(String classNum) {
-        this.classNum = classNum;
-    }
 
     public String getStudentNum() {
         return studentNum;
@@ -65,12 +58,20 @@ public class Student implements Serializable {
         this.studentPassWord = studentPassWord;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
                 "id=" + id +
                 ", studentName='" + studentName + '\'' +
-                ", classNum='" + classNum + '\'' +
+                ", className='" + className + '\'' +
                 ", studentNum='" + studentNum + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", studentPassWord='" + studentPassWord + '\'' +

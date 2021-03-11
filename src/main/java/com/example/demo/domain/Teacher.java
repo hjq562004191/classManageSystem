@@ -12,21 +12,6 @@ public class Teacher implements Serializable {
 
     private String college;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCollege() {
-        return college;
-    }
-
-    public void setCollege(String college) {
-        this.college = college;
-    }
 
     private String phoneNumber;  //电话
 
@@ -34,6 +19,7 @@ public class Teacher implements Serializable {
 
     private int classHour; //学时总长
 
+    private String className; //对应班级的id，用;分割
 
     public int getTeacherId() {
         return id;
@@ -75,6 +61,30 @@ public class Teacher implements Serializable {
         this.classHour = classHour;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -84,6 +94,7 @@ public class Teacher implements Serializable {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", teacherPassWord='" + teacherPassWord + '\'' +
                 ", classHour=" + classHour +
+                ", className='" + className + '\'' +
                 '}';
     }
 }

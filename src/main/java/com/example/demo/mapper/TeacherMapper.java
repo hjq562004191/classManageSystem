@@ -29,6 +29,7 @@ public interface TeacherMapper {
             @Result(column = "teacher_name" ,property = "teacherName"),
             @Result(column = "college" ,property = "college"),
             @Result(column = "phone_number" ,property = "phoneNumber"),
+            @Result(column = "class_name" ,property = "className"),
             @Result(column = "teacher_pass_word" ,property = "teacherPassWord")}
     )
     Teacher findTeacherByPhone(String phone);

@@ -3,7 +3,6 @@ package com.example.demo.service.Impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.domain.Face.Root;
 import com.example.demo.domain.Face.User_list;
-import com.example.demo.domain.Student;
 import com.example.demo.model.ResultBuilder;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.FaceService;
@@ -31,7 +30,7 @@ public class FaceServiceImpl implements FaceService {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("image", image);
-            map.put("group_id", "group_test");
+            map.put("group_id", "group_class");
             map.put("user_id", phone);
             map.put("user_info", phone);
             map.put("liveness_control", "NORMAL");
@@ -65,7 +64,7 @@ public class FaceServiceImpl implements FaceService {
             Map<String, Object> map = new HashMap<>();
             map.put("image", searchImage);
             map.put("liveness_control", "NORMAL");
-            map.put("group_id_list", "group_test");
+            map.put("group_id_list", "group_class");
             map.put("image_type", "BASE64");
             map.put("quality_control", "NORMAL");
 

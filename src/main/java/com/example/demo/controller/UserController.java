@@ -103,6 +103,16 @@ public class UserController {
         return userService.getStudentList(page, pageSize);
     }
 
+    @RequestMapping(value = "/user/getStudentListClass", method = POST)
+    public ResultModel getStudentListClass(int page,int pageSize,String phone)  {
+        return userService.getStudentListClass(page, pageSize,phone);
+    }
+
+    @RequestMapping(value = "/user/getTeacherClass", method = POST)
+    public ResultModel getTeacherClass(int page,int pageSize,String phone)  {
+        return userService.getTeacherClass(page, pageSize,phone);
+    }
+
     @RequestMapping(value = "/user/changeStudent", method = POST)
     public ResultModel changeStudent(Student student)  {
         return userService.changeStudent(student);
