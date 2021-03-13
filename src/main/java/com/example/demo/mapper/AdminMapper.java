@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.*;
 public interface AdminMapper {
     @Insert("insert into admin(admin_name, phone_number,admin_pass_word)" +
             " values(#{adminName}, #{phoneNumber}, #{adminPassWord})")
+    @ResultMap("adminMap")
     int addAdmin(Admin admin);
 
     @Delete("DELETE FROM admin WHERE id = #{id}")

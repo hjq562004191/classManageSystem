@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,6 +114,10 @@ public class UserServiceImpl implements UserService {
             return ResultBuilder.getFailure(-1, "用户不存在");
         }
 
+        if (teacher.getAuthorLock().equals("0")) {
+            return ResultBuilder.getFailure(1, "账号未激活");
+        }
+
         String mPassword = teacher.getTeacherPassWord();
         if (mPassword.equals(passWord)) {
             String token = "";
@@ -137,7 +140,6 @@ public class UserServiceImpl implements UserService {
         if (admin == null) {
             return ResultBuilder.getFailure(-1, "用户不存在");
         }
-
         String mPassword = admin.getAdminPassWord();
         if (mPassword.equals(passWord)) {
             String token = "";
@@ -186,6 +188,25 @@ public class UserServiceImpl implements UserService {
         }
         return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
     }
+
+    @Override
+    public ResultModel getTeacherList(int page, int pageSize) {
+        List<Teacher> teachers = teacherMapper.getTeacherList(pageSize, (page - 1) * pageSize);
+        if (teachers == null) {
+            return ResultBuilder.getFailure(-1, "获取教师列表失败");
+        }
+        return ResultBuilder.getSuccess(teachers.size(), teachers, "获取教师列表成功");
+    }
+
+    @Override
+    public ResultModel getClassHourList(int page, int pageSize) {
+        List<Teacher> teachers = teacherMapper.getClassHourList(pageSize, (page - 1) * pageSize);
+        if (teachers == null) {
+            return ResultBuilder.getFailure(-1, "获取教师列表失败");
+        }
+        return ResultBuilder.getSuccess(teachers.size(), teachers, "获取教师列表成功");
+    }
+
     @Override
     public ResultModel getStudentListClass(int page, int pageSize,String phone) {
         Student student = studentMapper.findStudentByPhone(phone);
@@ -231,7 +252,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultModel getTeacherClass(int page, int pageSize, String phone) {
         Teacher teacher = teacherMapper.findTeacherByPhone(phone);
-        System.out.println(teacher.getClassName());
+        if (teacher.getClassName().equals("")){
+            List<Student> result = new LinkedList<>();
+            return ResultBuilder.getSuccess(result,"教师无学生");
+        }
         if (teacher.getClassName().contains(";")) {
             String[] strings = teacher.getClassName().split(";");
         List<Student> result = new LinkedList<>();
@@ -244,6 +268,24 @@ public class UserServiceImpl implements UserService {
         }
         List<Student> stus = studentMapper.getStudentListClass(pageSize, (page - 1) * pageSize,teacher.getClassName());
         return ResultBuilder.getSuccess(stus.size(),stus,"获取教师学生成功");
+    }
+
+    @Override
+    public ResultModel clearClassHour(String phone) {
+        int res = teacherMapper.clearClassHour(phone);
+        if (res == 1){
+            return ResultBuilder.getSuccess("课时费结算成功");
+        }
+        return ResultBuilder.getFailure(-1,"课时费结算失败");
+    }
+
+    @Override
+    public ResultModel changeTeacherAuthor(String phone, String lock) {
+        int res = teacherMapper.changeTeacherAuthor(lock,phone);
+        if (res == 1){
+            return ResultBuilder.getSuccess("权限更改成功");
+        }
+        return ResultBuilder.getFailure(-1,"权限更改失败");
     }
 
 

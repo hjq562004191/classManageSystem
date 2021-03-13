@@ -32,9 +32,20 @@ public interface ClassMapper {
     @ResultMap("classMap")
     ClassPOJO getClassByName(String className);
 
+    @Select("select * from classes where id = #{id}")
+    @ResultMap("classMap")
+    ClassPOJO getClassById(int id);
+
     @Select("select class_name from classes where id = #{id}")
     String getClassNameById(int id);
 
     @Update("UPDATE classes SET total= (total+1) WHERE id = #{classId}")
     int addTotal(int classId);
+
+    @Update("UPDATE classes SET teacher_id = #{ids} WHERE id = #{classId}")
+    int addTeacherId(@Param("classId")int classId,@Param("ids")String ids);
+
+    @Delete("DELETE from classes WHERE id = #{id}")
+    boolean deleteClass(int id);
+
 }

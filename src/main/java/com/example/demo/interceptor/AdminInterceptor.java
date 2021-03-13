@@ -18,7 +18,7 @@ import java.util.Map;
 @CrossOrigin
 public class AdminInterceptor implements HandlerInterceptor {
 
-    private String[] interceptUrl = {"/register", "/login", "/util"};
+    private String[] interceptUrl = {"/register", "/user", "/util"};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

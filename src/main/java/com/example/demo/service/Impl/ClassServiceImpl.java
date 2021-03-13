@@ -2,6 +2,7 @@ package com.example.demo.service.Impl;
 
 import com.example.demo.domain.ClassList;
 import com.example.demo.domain.ClassPOJO;
+import com.example.demo.domain.Teacher;
 import com.example.demo.mapper.ClassMapper;
 import com.example.demo.mapper.StudentMapper;
 import com.example.demo.mapper.TeacherMapper;
@@ -32,24 +33,23 @@ public class ClassServiceImpl implements ClassService {
     StudentMapper studentMapper;
 
     @Override
-    public ResultModel addClass(ClassPOJO classPOJO) {
-        ClassPOJO clazz2 = classMapper.getClassByName(classPOJO.getClassName());
-        if (clazz2 == null){
+    public ResultModel addClass(String className,String phoneNumber) {
+        ClassPOJO clazz2 = classMapper.getClassByName(className);
+        if (clazz2 == null) {
+            ClassPOJO classPOJO = new ClassPOJO();
+            classPOJO.setClassName(className);
+            Teacher teacher = teacherMapper.findTeacherByPhone(phoneNumber);
+            classPOJO.setTeacherId(String.valueOf(teacher.getTeacherId()));
             int result = classMapper.addClass(classPOJO);
-            if (result == 1){
+            if (result == 1) {
                 return ResultBuilder.getSuccess("创建班级成功");
             }
-            return ResultBuilder.getFailure(-1,"创建班级失败");
-        }else {
-            return ResultBuilder.getFailure(-1,"班级已存在");
+            return ResultBuilder.getFailure(-1, "创建班级失败");
+        } else {
+            return ResultBuilder.getFailure(-1, "班级已存在");
         }
     }
 
-    @Override
-    public ResultModel allowClass(int classId) {
-
-        return null;
-    }
 
     @Override
     public ResultModel getClassList() {
@@ -58,25 +58,25 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ResultModel getClassAndTeacherList(int page,int pageSize) {
+    public ResultModel getClassAndTeacherList(int page, int pageSize) {
         List<ClassPOJO> list = classMapper.getClassAndTeacherList(pageSize, (page - 1) * pageSize);
         List<ClassList> result = new LinkedList<>();
-        for (ClassPOJO c:
+        for (ClassPOJO c :
                 list) {
             String teacherList = c.getTeacherId();
-            if (teacherList.contains(";")){
+            if (teacherList.contains(";")) {
                 String teachers = "";
                 String[] strings = teacherList.split(";");
                 for (String s :
                         strings) {
                     String temp = teacherMapper.findTeacherNameById(Integer.parseInt(s));
-                    teachers += (temp+" ");
+                    teachers += (temp + ";");
                 }
                 ClassList classList = new ClassList();
                 classList.setClassPOJO(c);
                 classList.setTeachers(teachers);
                 result.add(classList);
-            }else {
+            } else {
                 ClassList classList = new ClassList();
                 classList.setClassPOJO(c);
                 String teacher = teacherMapper.findTeacherNameById(Integer.parseInt(teacherList));
@@ -84,23 +84,23 @@ public class ClassServiceImpl implements ClassService {
                 result.add(classList);
             }
         }
-        return ResultBuilder.getSuccess(result.size(),result,"获取班级列表成功");
+        return ResultBuilder.getSuccess(result.size(), result, "获取班级列表成功");
     }
 
     @Override
     public ResultModel addTotal(int classId) {
         int result = classMapper.addTotal(classId);
-        if (result == 1){
+        if (result == 1) {
             return ResultBuilder.getSuccess("total+1成功");
         }
-        return ResultBuilder.getFailure(-1,"total+1失败");
+        return ResultBuilder.getFailure(-1, "total+1失败");
     }
 
     @Override
-    public ResultModel joinClass(String classCode,int stuId) {
-        if (!JedisUtils.isExists(classCode)){
-            return ResultBuilder.getFailure(-1,"班级码错误");
-        }else {
+    public ResultModel joinClass(String classCode, int stuId) {
+        if (!JedisUtils.isExists(classCode)) {
+            return ResultBuilder.getFailure(-1, "班级码错误");
+        } else {
             String result = JedisUtils.getToken(classCode);
             int classId = Integer.parseInt(result);
             String className = classMapper.getClassNameById(classId);
@@ -114,17 +114,47 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ResultModel allowJoinClass(int id) {
-        if (JedisUtils.isExists("class_"+String.valueOf(id))){
-            String code = JedisUtils.getToken("class_"+String.valueOf(id));
-            return ResultBuilder.getSuccess(code,"班级已开放，验证码为"+code);
+    public ResultModel allowJoinClass(int id, String phoneNumber) {
+        //老师开放班级，则加入此班级
+        Teacher teacher = teacherMapper.findTeacherByPhone(phoneNumber);
+        ClassPOJO classPOJO = classMapper.getClassById(id);
+        int teacherId = teacher.getTeacherId();
+        String teaId = String.valueOf(teacherId);
+        String ids = classPOJO.getTeacherId();
+        String[] strings = ids.split(";");
+        boolean f = true;
+        for (String s:
+             strings) {
+            if (s.equals(teaId)){
+                f = false;
+                break;
+            }
         }
-        int uuid = (int)((Math.random()*9+1)*1000);
+        if (f){
+            ids = ids + ";" + String.valueOf(teacherId);
+            classMapper.addTeacherId(classPOJO.getId(),ids);
+        }
 
-        JedisUtils.setToken("class_"+String.valueOf(id),String.valueOf(uuid),1);
-        JedisUtils.setToken(String.valueOf(uuid),String.valueOf(id),1);
+        if (JedisUtils.isExists("class_" + String.valueOf(id))) {
+            String code = JedisUtils.getToken("class_" + String.valueOf(id));
+            return ResultBuilder.getSuccess(code, "班级已开放，验证码为" + code);
+        }
+        int uuid = (int) ((Math.random() * 9 + 1) * 1000);
+
+        JedisUtils.setToken("class_" + String.valueOf(id), String.valueOf(uuid), 1);
+        JedisUtils.setToken(String.valueOf(uuid), String.valueOf(id), 1);
 
         return ResultBuilder.getSuccess(uuid);
+    }
+
+    @Override
+    public ResultModel deleteClass(int id, String name) {
+        studentMapper.deleteClass(name);
+        boolean b = classMapper.deleteClass(id);
+        if (b) {
+            return ResultBuilder.getSuccess("班级删除成功");
+        }
+        return ResultBuilder.getFailure(-1, "班级删除失败");
     }
 
 }

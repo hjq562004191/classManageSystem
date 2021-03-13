@@ -32,6 +32,10 @@ public interface UserService {
 
     ResultModel getStudentList(int page,int pageSize);
 
+    ResultModel getTeacherList(int page,int pageSize);
+
+    ResultModel getClassHourList(int page,int pageSize);
+
     ResultModel getStudentListClass(int page,int pageSize,String phone);
     
     ResultModel changeStudent(Student student);
@@ -41,4 +45,8 @@ public interface UserService {
     ResultModel deleteStudent(String phoneNumber);
 
     ResultModel getTeacherClass(int page, int pageSize, String phone);
+
+    ResultModel clearClassHour(String phone);
+
+    ResultModel changeTeacherAuthor(String phone,String lock);
 }

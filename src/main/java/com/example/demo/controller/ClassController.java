@@ -22,8 +22,8 @@ public class ClassController {
     ClassService classService;
 
     @RequestMapping(value = "/class/creatClass", method = POST)
-    public ResultModel creatClass(ClassPOJO classPOJO) {
-        return classService.addClass(classPOJO);
+    public ResultModel creatClass(String className,String phoneNumber) {
+        return classService.addClass(className,phoneNumber);
     }
 
     @RequestMapping(value = "/class/getClassList", method = POST)
@@ -42,8 +42,13 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/class/allowJoinClass", method = POST)
-    public ResultModel allowJoinClass(int classId)  {
-        return classService.allowJoinClass(classId);
+    public ResultModel allowJoinClass(int classId,String phoneNumber)  {
+        return classService.allowJoinClass(classId,phoneNumber);
+    }
+
+    @RequestMapping(value = "/class/deleteClass", method = POST)
+    public ResultModel deleteClass(int id,String className){
+        return classService.deleteClass(id,className);
     }
 
 }

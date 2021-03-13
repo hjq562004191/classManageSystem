@@ -21,6 +21,8 @@ public class Teacher implements Serializable {
 
     private String className; //对应班级的id，用;分割
 
+    private String authorLock; //账号是否激活 0未激活  1已激活
+
     public int getTeacherId() {
         return id;
     }
@@ -85,6 +87,14 @@ public class Teacher implements Serializable {
         this.className = className;
     }
 
+    public String getAuthorLock() {
+        return authorLock;
+    }
+
+    public void setAuthorLock(String authorLock) {
+        this.authorLock = authorLock;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -95,6 +105,7 @@ public class Teacher implements Serializable {
                 ", teacherPassWord='" + teacherPassWord + '\'' +
                 ", classHour=" + classHour +
                 ", className='" + className + '\'' +
+                ", authorLock='" + authorLock + '\'' +
                 '}';
     }
 }

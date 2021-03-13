@@ -55,4 +55,9 @@ public interface StudentMapper {
     @Update("UPDATE student SET class_name = #{className} WHERE id = #{id}")
     @ResultMap("studentMap")
     int joinClass(@Param("id")int id,@Param("className")String className);
+
+    //班级被删
+    @Update("UPDATE student SET class_name = '' WHERE class_name = #{className}")
+    @ResultMap("studentMap")
+    int deleteClass(String className);
 }

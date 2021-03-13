@@ -98,6 +98,16 @@ public class UserController {
         return userService.getTeacher(phoneNumber);
     }
 
+    @RequestMapping(value = "/user/getTeacherList", method = POST)
+    public ResultModel getTeacherList(int page,int pageSize)  {
+        return userService.getTeacherList(page, pageSize);
+    }
+
+    @RequestMapping(value = "/user/getClassHourList", method = POST)
+    public ResultModel getClassHourList(int page,int pageSize)  {
+        return userService.getClassHourList(page, pageSize);
+    }
+
     @RequestMapping(value = "/user/getStudentList", method = POST)
     public ResultModel getStudentList(int page,int pageSize)  {
         return userService.getStudentList(page, pageSize);
@@ -126,6 +136,16 @@ public class UserController {
     @RequestMapping(value = "/user/deleteStudent", method = POST)
     public ResultModel deleteStudent(String phoneNumber)  {
         return userService.deleteStudent(phoneNumber);
+    }
+
+    @RequestMapping(value = "/user/clearClassHour", method = POST)
+    public ResultModel clearClassHour(String phoneNumber)  {
+        return userService.clearClassHour(phoneNumber);
+    }
+
+    @RequestMapping(value = "/user/changeAuthor", method = POST)
+    public ResultModel changeTeacherAuthor(String phoneNumber,String authorLock)  {
+        return userService.changeTeacherAuthor(phoneNumber,authorLock);
     }
 
 }
