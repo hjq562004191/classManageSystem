@@ -9,5 +9,5 @@ import com.example.demo.model.ResultModel;
  */
 public interface FaceService {
     ResultModel addFace(String image, String phone);
-    ResultModel searchFace(String searchImage,String phone);
+    ResultModel searchFace(String searchImage,String phone,int signId);
 }

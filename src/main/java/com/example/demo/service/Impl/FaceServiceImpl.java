@@ -56,7 +56,7 @@ public class FaceServiceImpl implements FaceService {
     }
 
     @Override
-    public ResultModel searchFace(String searchImage, String phone) {
+    public ResultModel searchFace(String searchImage, String phone,int signId) {
         searchImage = searchImage.substring(22,searchImage.length()-1);
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
@@ -90,6 +90,7 @@ public class FaceServiceImpl implements FaceService {
             }
             System.out.println(searchImage);
             if (score > 80.00) {
+
                 return ResultBuilder.getSuccess(result);
             } else {
                 return ResultBuilder.getFailure(-1, "人脸相似度低");

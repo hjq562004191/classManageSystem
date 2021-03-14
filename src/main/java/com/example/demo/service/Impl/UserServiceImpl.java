@@ -181,6 +181,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResultModel getAdmin(String phone) {
+        Admin admin = adminMapper.findAdminByPhone(phone);
+        if (admin == null) {
+            return ResultBuilder.getFailure(-1, "用户不存在");
+        }
+        return ResultBuilder.getSuccess(admin, "获取成功");
+    }
+
+    @Override
     public ResultModel getStudentList(int page, int pageSize) {
         List<Student> stus = studentMapper.getStudentList(pageSize, (page - 1) * pageSize);
         if (stus == null) {

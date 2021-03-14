@@ -98,6 +98,11 @@ public class UserController {
         return userService.getTeacher(phoneNumber);
     }
 
+    @RequestMapping(value = "/user/getAdmin", method = POST)
+    public ResultModel getAdmin(String phoneNumber)  {
+        return userService.getAdmin(phoneNumber);
+    }
+
     @RequestMapping(value = "/user/getTeacherList", method = POST)
     public ResultModel getTeacherList(int page,int pageSize)  {
         return userService.getTeacherList(page, pageSize);

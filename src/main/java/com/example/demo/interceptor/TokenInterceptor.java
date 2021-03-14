@@ -26,7 +26,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private Logger logger = Logger.getLogger(TokenInterceptor.class);
     // 设置不拦截的路径
     private static final String[] IGNORE_URL = {"/user", "/class", "Form", "/utils",
-            "/admin","/judgephone","/getphonecode","/face"};
+            "/admin","/judgephone","/getphonecode","/face","/hour"};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {

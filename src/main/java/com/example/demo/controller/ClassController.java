@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.ClassPOJO;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;

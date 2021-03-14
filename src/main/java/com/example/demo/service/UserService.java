@@ -30,6 +30,8 @@ public interface UserService {
 
     ResultModel getTeacher(String phone);
 
+    ResultModel getAdmin(String phone);
+
     ResultModel getStudentList(int page,int pageSize);
 
     ResultModel getTeacherList(int page,int pageSize);
