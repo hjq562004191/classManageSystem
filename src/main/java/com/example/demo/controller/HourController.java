@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.ClassHour;
-import com.example.demo.mapper.HourMapper;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.HourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -30,7 +28,22 @@ public class HourController {
     }
 
     @RequestMapping(value = "/hour/getClassHourList", method = POST)
-    public ResultModel getClassHourList(int page,int pageSize,String phoneNumber) {
-        return hourService.getClassHourList(page,pageSize,phoneNumber);
+    public ResultModel getClassHourList(String phoneNumber) {
+        return hourService.getClassHourList(phoneNumber);
+    }
+
+    @RequestMapping(value = "/hour/getTeacherClassHourList", method = POST)
+    public ResultModel getTeacherClassHourList(String phoneNumber) {
+        return hourService.getTeacherClassHourList(phoneNumber);
+    }
+
+    @RequestMapping(value = "/hour/deleteSign", method = POST)
+    public ResultModel deleteSign(int id) {
+        return hourService.deleteSign(id);
+    }
+
+    @RequestMapping(value = "/hour/getStudentSign", method = POST)
+    public ResultModel getStudentSign(int hourId) {
+        return hourService.getStudentSign(hourId);
     }
 }

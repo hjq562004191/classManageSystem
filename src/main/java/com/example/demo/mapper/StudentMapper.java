@@ -36,6 +36,10 @@ public interface StudentMapper {
     List<Student> getStudentListClass(@Param("page") int page,@Param("pageSize")int pageSize,
                                       @Param("className")String className);
 
+    @Select("SELECT * from student where class_name = #{className}")
+    @ResultMap("studentMap")
+    List<Student> getStudentListByClassName(String className);
+
     @Select("select * from student where phone_number = #{phone}")
     @Results(id = "studentMap",value = {@Result(column = "id" ,property = "id"),
             @Result(column = "student_name" ,property = "studentName"),

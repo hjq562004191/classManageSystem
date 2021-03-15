@@ -23,15 +23,14 @@ public interface HourMapper {
     )
     List<ClassHour> getClassHour();
 
-    @Select("select * from hour where class_name=#{className} limit #{page} offset #{pageSize}")
+    @Select("select * from hour where class_name=#{className}")
     @ResultMap("hourMap")
-    List<ClassHour> getClassHourList(@Param("page") int page, @Param("pageSize")int pageSize,
-                                     @Param("className")String className);
+    List<ClassHour> getClassHourList(String className);
 
     @Insert("insert into hour ( teacher_id, sign_title, class_name ,create_time,end_time,class_hour) " +
             "values (#{teacherId}, #{signTitle}, #{className},#{createTime}, #{endTime}, #{classHour})")
     @ResultMap("hourMap")
-    int createClassHour(ClassHour clazz);
+    int createClassSign(ClassHour clazz);
 
     @Select("select * from hour where id = #{id}")
     @ResultMap("hourMap")
@@ -42,9 +41,9 @@ public interface HourMapper {
     @ResultMap("hourMap")
     int setLock(int id);
 
-    @Select("select class_name from classes where id = #{id}")
-    String getClassNameById(int id);
+    @Select("select id from hour where create_time = #{time}")
+    int getIdByTime(int time);
 
     @Delete("DELETE from hour WHERE id = #{id}")
-    boolean deleteClassHour(int id);
+    boolean deleteSign(int id);
 }

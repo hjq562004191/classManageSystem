@@ -10,5 +10,8 @@ import com.example.demo.model.ResultModel;
 
 public interface HourService {
     ResultModel createHourSign(ClassHour classHour);
-    ResultModel getClassHourList(int page,int pageSize,String phoneNumber);
+    ResultModel getClassHourList(String phoneNumber);
+    ResultModel getTeacherClassHourList(String phoneNumber);
+    ResultModel deleteSign(int id);
+    ResultModel getStudentSign(int hourId);
 }
