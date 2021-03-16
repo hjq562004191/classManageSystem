@@ -297,5 +297,16 @@ public class UserServiceImpl implements UserService {
         return ResultBuilder.getFailure(-1,"权限更改失败");
     }
 
+    @Override
+    public ResultModel getTeacherById(int id) {
+        Teacher teacher = teacherMapper.findTeacherById(id);
+        List<Teacher> list = new LinkedList<>();
+        list.add(teacher);
+        if (teacher == null){
+            return ResultBuilder.getFailure(-1,"教师为空");
+        }
+        return ResultBuilder.getSuccess(list);
+    }
+
 
 }

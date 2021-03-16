@@ -28,7 +28,7 @@ public class FaceController {
     }
 
     @RequestMapping(value = "/face/searchFace", method = POST)
-    public ResultModel searchFace(String image, String phone,int signId) {
-        return faceService.searchFace(image,phone,signId);
+    public ResultModel searchFace(String image, String phone,int signId,int userId) {
+        return faceService.searchFace(image,phone,signId,userId);
     }
 }

@@ -12,7 +12,6 @@ public class Teacher implements Serializable {
 
     private String college;
 
-
     private String phoneNumber;  //电话
 
     private String teacherPassWord;  //密码

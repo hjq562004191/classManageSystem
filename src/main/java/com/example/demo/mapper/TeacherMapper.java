@@ -56,4 +56,10 @@ public interface TeacherMapper {
 
     @Update("UPDATE teacher SET author_lock = #{authorLock}  WHERE  phone_number = #{phoneNumber} ")
     int changeTeacherAuthor(@Param("authorLock")String authorLock,@Param("phoneNumber")String phoneNumber);
+
+    @Update("UPDATE teacher SET class_hour = (class_hour + #{classHour}) WHERE  id=#{id}")
+    int addClassHour(@Param("id")int id,@Param("classHour")int classHour);
+
+    @Update("UPDATE teacher SET class_hour = (class_hour - #{classHour}) WHERE  id=#{id}")
+    int jianClassHour(@Param("id")int id,@Param("classHour")int classHour);
 }

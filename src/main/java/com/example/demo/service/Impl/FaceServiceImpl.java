@@ -3,6 +3,7 @@ package com.example.demo.service.Impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.domain.Face.Root;
 import com.example.demo.domain.Face.User_list;
+import com.example.demo.mapper.SignMapper;
 import com.example.demo.model.ResultBuilder;
 import com.example.demo.model.ResultModel;
 import com.example.demo.service.FaceService;
@@ -10,6 +11,7 @@ import com.example.demo.utils.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 @CrossOrigin
 public class FaceServiceImpl implements FaceService {
 
+    @Resource
+    SignMapper signMapper;
 
     @Override
     public ResultModel addFace(String image, String phone) {
@@ -56,7 +60,7 @@ public class FaceServiceImpl implements FaceService {
     }
 
     @Override
-    public ResultModel searchFace(String searchImage, String phone,int signId) {
+    public ResultModel searchFace(String searchImage, String phone,int signId,int userId) {
         searchImage = searchImage.substring(22,searchImage.length()-1);
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
@@ -90,8 +94,8 @@ public class FaceServiceImpl implements FaceService {
             }
             System.out.println(searchImage);
             if (score > 80.00) {
-
-                return ResultBuilder.getSuccess(result);
+                signMapper.setSign(signId,userId);
+                return ResultBuilder.getSuccess("识别成功");
             } else {
                 return ResultBuilder.getFailure(-1, "人脸相似度低");
             }

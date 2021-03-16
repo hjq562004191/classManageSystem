@@ -153,4 +153,9 @@ public class UserController {
         return userService.changeTeacherAuthor(phoneNumber,authorLock);
     }
 
+    @RequestMapping(value = "/user/getTeacherById", method = POST)
+    public ResultModel getTeacher(int id)  {
+        return userService.getTeacherById(id);
+    }
+
 }

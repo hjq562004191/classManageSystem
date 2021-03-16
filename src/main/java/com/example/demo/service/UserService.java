@@ -51,4 +51,6 @@ public interface UserService {
     ResultModel clearClassHour(String phone);
 
     ResultModel changeTeacherAuthor(String phone,String lock);
+
+    ResultModel getTeacherById(int id);
 }

@@ -39,6 +39,7 @@ public class HourServiceImpl implements HourService {
 
         int res = hourMapper.createClassSign(classHour);
         if (res == 1){
+            teacherMapper.addClassHour(classHour.getTeacherId(),classHour.getClassHour());
             int hourId = hourMapper.getIdByTime(time);
             List<Student> studentList = studentMapper.getStudentListByClassName(classHour.getClassName());
             for (Student s :
@@ -107,8 +108,10 @@ public class HourServiceImpl implements HourService {
 
     @Override
     public ResultModel deleteSign(int id) {
+        ClassHour hour = hourMapper.getClassHourById(id);
         boolean f = hourMapper.deleteSign(id);
         if (f){
+            teacherMapper.jianClassHour(hour.getTeacherId(),hour.getClassHour());
             return ResultBuilder.getSuccess("删除签到成功");
         }
         return ResultBuilder.getFailure(-1,"删除签到失败");
@@ -134,5 +137,11 @@ public class HourServiceImpl implements HourService {
         }
         second.addAll(first);
         return ResultBuilder.getSuccess(second,"获取学生签到列表成功");
+    }
+
+    @Override
+    public ResultModel getTeacherClassHour(int id) {
+
+        return null;
     }
 }

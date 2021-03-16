@@ -29,4 +29,7 @@ public interface SignMapper {
             @Result(column = "sign" ,property = "sign",jdbcType=JdbcType.VARCHAR)}
     )
     List<HourList> getStuSignList(int hourId);
+
+    @Update("UPDATE hourlist SET sign = '1' WHERE hour_id = #{signId} and student_id = #{userId}")
+    int setSign(@Param("signId")int signId,@Param("userId")int userId);
 }

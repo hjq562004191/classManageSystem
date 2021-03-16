@@ -14,4 +14,5 @@ public interface HourService {
     ResultModel getTeacherClassHourList(String phoneNumber);
     ResultModel deleteSign(int id);
     ResultModel getStudentSign(int hourId);
+    ResultModel getTeacherClassHour(int id);
 }
