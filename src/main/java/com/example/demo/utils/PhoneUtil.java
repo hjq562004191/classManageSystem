@@ -11,8 +11,8 @@ import com.squareup.okhttp.*;
 import java.io.IOException;
 
 public class PhoneUtil {
-    private static String ApplicationId = "c5732f86cfe1bddf3308e71eb0ec7b96";
-    private static String RestApiKey = "da63f56e12c97ad9c6ede545604f3a4a";
+    private static String ApplicationId = "";
+    private static String RestApiKey = "";
     private final static ObjectMapper MAPPER = new ObjectMapper();
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

@@ -29,9 +29,9 @@ public class GetFaceToken {
             return access_token;
         }
         // 官网获取的 API Key 更新为你注册的
-        String clientId = "LUpGvoAleWTMLHe3E1lMcOIP";
+        String clientId = "";
         // 官网获取的 Secret Key 更新为你注册的
-        String clientSecret = "S7VIi4HEmKLbB1Nhk687sq7Uj2GNgjhF";
+        String clientSecret = "";
 
         return getAuth(clientId, clientSecret);
     }
