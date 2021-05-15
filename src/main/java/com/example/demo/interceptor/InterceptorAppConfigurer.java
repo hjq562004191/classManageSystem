@@ -11,15 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class InterceptorAppConfigurer extends WebMvcConfigurationSupport {
     @Autowired
     private TokenInterceptor tokenInterceptor;
-    @Autowired
-    private FileTypeInterceptor fileTypeInterceptor;
-    @Autowired
-    private AdminInterceptor adminInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(fileTypeInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(adminInterceptor).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 }

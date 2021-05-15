@@ -41,6 +41,7 @@ public class ClassServiceImpl implements ClassService {
             Teacher teacher = teacherMapper.findTeacherByPhone(phoneNumber);
             classPOJO.setTeacherId(String.valueOf(teacher.getTeacherId()));
             int result = classMapper.addClass(classPOJO);
+            teacherMapper.addClassName(teacher.getId(),teacher.getClassName()+";"+className);
             if (result == 1) {
                 return ResultBuilder.getSuccess("创建班级成功");
             }
@@ -65,16 +66,16 @@ public class ClassServiceImpl implements ClassService {
                 list) {
             String teacherList = c.getTeacherId();
             if (teacherList.contains(";")) {
-                String teachers = "";
+                StringBuilder teachers = new StringBuilder();
                 String[] strings = teacherList.split(";");
                 for (String s :
                         strings) {
                     String temp = teacherMapper.findTeacherNameById(Integer.parseInt(s));
-                    teachers += (temp + ";");
+                    teachers.append(temp).append(";");
                 }
                 ClassList classList = new ClassList();
                 classList.setClassPOJO(c);
-                classList.setTeachers(teachers);
+                classList.setTeachers(teachers.toString());
                 result.add(classList);
             } else {
                 ClassList classList = new ClassList();
@@ -84,7 +85,8 @@ public class ClassServiceImpl implements ClassService {
                 result.add(classList);
             }
         }
-        return ResultBuilder.getSuccess(result.size(), result, "获取班级列表成功");
+        int total = classMapper.getClassTotalNum();
+        return ResultBuilder.getSuccess(total, result, "获取班级列表成功");
     }
 
     @Override
@@ -115,10 +117,13 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public ResultModel allowJoinClass(int id, String phoneNumber) {
-        //老师开放班级，则加入此班级
+        //老师开放班级，老师id则加入此班级的老师名单中
         Teacher teacher = teacherMapper.findTeacherByPhone(phoneNumber);
         ClassPOJO classPOJO = classMapper.getClassById(id);
         int teacherId = teacher.getTeacherId();
+        if (!teacher.getClassName().contains(classPOJO.getClassName())){
+            teacherMapper.addClassName(teacherId,teacher.getClassName()+";"+classPOJO.getClassName());
+        }
         String teaId = String.valueOf(teacherId);
         String ids = classPOJO.getTeacherId();
         String[] strings = ids.split(";");

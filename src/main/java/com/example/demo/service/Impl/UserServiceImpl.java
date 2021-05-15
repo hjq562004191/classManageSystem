@@ -1,6 +1,7 @@
 package com.example.demo.service.Impl;
 
 import com.example.demo.domain.Admin;
+import com.example.demo.domain.ClassPOJO;
 import com.example.demo.domain.Student;
 import com.example.demo.domain.Teacher;
 import com.example.demo.mapper.AdminMapper;
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService {
         Student stu = studentMapper.findStudentByPhone(student.getPhoneNumber());
         //检测账号是否存在
         if (stu == null) {
+            student.setStudentNum("");
+            student.setClassName("");
             int result = studentMapper.addStudent(student);
             if (result == 0) {
                 return ResultBuilder.getFailure(-1, "添加学生失败");
@@ -95,8 +98,8 @@ public class UserServiceImpl implements UserService {
         if (mPassword.equals(passWord)) {
             String token = "";
             try {
-                token = JWTUtils.createToken(stu.getId(), stu.getStudentName(), stu.getPhoneNumber());
-                JedisUtils.setToken(String.valueOf(stu.getId()), token, 7);
+                token = JWTUtils.createToken(stu.getId(), stu.getStudentName(), 1);
+                JedisUtils.setToken("stu_"+stu.getId(), token, 7*24);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResultBuilder.getFailure(-1, "创建token错误");
@@ -122,8 +125,8 @@ public class UserServiceImpl implements UserService {
         if (mPassword.equals(passWord)) {
             String token = "";
             try {
-                token = JWTUtils.createToken(teacher.getTeacherId(), teacher.getTeacherName(), teacher.getPhoneNumber());
-                JedisUtils.setToken(String.valueOf(teacher.getTeacherId()), token, 7);
+                token = JWTUtils.createToken(teacher.getTeacherId(), teacher.getTeacherName(), 2);
+                JedisUtils.setToken("tea_"+teacher.getTeacherId(), token, 7*24);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResultBuilder.getFailure(-1, "创建token错误");
@@ -144,8 +147,8 @@ public class UserServiceImpl implements UserService {
         if (mPassword.equals(passWord)) {
             String token = "";
             try {
-                token = JWTUtils.createToken(admin.getAdminId(), admin.getAdminName(), admin.getPhoneNumber());
-                JedisUtils.setToken(String.valueOf(admin.getAdminId()), token, 7);
+                token = JWTUtils.createToken(admin.getAdminId(), admin.getAdminName(),3);
+                JedisUtils.setToken("adm_"+admin.getAdminId(), token, 7*24);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResultBuilder.getFailure(-1, "创建token错误");
@@ -195,7 +198,8 @@ public class UserServiceImpl implements UserService {
         if (stus == null) {
             return ResultBuilder.getFailure(-1, "获取学生列表失败");
         }
-        return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
+        int total = studentMapper.getStuTotalNum();
+        return ResultBuilder.getSuccess(total, stus, "获取学生列表成功");
     }
 
     @Override
@@ -204,7 +208,8 @@ public class UserServiceImpl implements UserService {
         if (teachers == null) {
             return ResultBuilder.getFailure(-1, "获取教师列表失败");
         }
-        return ResultBuilder.getSuccess(teachers.size(), teachers, "获取教师列表成功");
+        int total = teacherMapper.getTeacherTotalNum();
+        return ResultBuilder.getSuccess(total, teachers, "获取教师列表成功");
     }
 
     @Override
@@ -223,7 +228,8 @@ public class UserServiceImpl implements UserService {
         if (stus == null) {
             return ResultBuilder.getFailure(-1, "获取学生列表失败");
         }
-        return ResultBuilder.getSuccess(stus.size(), stus, "获取学生列表成功");
+        int total = classMapper.getStuClassTotalNum(student.getClassName());
+        return ResultBuilder.getSuccess(total, stus, "获取学生列表成功");
     }
 
     @Override
@@ -270,6 +276,9 @@ public class UserServiceImpl implements UserService {
         List<Student> result = new LinkedList<>();
         for (String className :
                 strings) {
+            if (className.equals("")){
+                continue;
+            }
             List<Student> stus = studentMapper.getStudentListClass(pageSize, (page - 1) * pageSize,className);
             result.addAll(stus);
         }
@@ -306,6 +315,40 @@ public class UserServiceImpl implements UserService {
             return ResultBuilder.getFailure(-1,"教师为空");
         }
         return ResultBuilder.getSuccess(list);
+    }
+
+    @Override
+    public ResultModel deleteTeacher(int id) {
+        Teacher teacher = teacherMapper.findTeacherById(id);
+        if (teacher == null){
+            return ResultBuilder.getFailure(-1,"教师信息为空");
+        }
+        List<ClassPOJO> classList = classMapper.getClassList();
+        for (ClassPOJO c :
+                classList) {
+            String[] strings = c.getTeacherId().split(";");
+            boolean f = false;
+            StringBuilder ids = new StringBuilder();
+            for (String s:
+                    strings) {
+                if (s.equals(String.valueOf(id))){
+                    f = true;
+                }else {
+                    if (ids.toString().equals("")){
+                        ids.append(s);
+                    }else {
+                        ids.append(";").append(s);
+                    }
+                }
+            }
+            if (f){
+                classMapper.deleteTeacherId(c.getId(), ids.toString());
+            }
+        }
+        boolean res = teacherMapper.deleteTeacher(id);
+        if (res)
+            return ResultBuilder.getSuccess("删除教师成功");
+        return ResultBuilder.getFailure(-1,"删除教师失败");
     }
 
 

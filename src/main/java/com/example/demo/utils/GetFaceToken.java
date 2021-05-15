@@ -81,7 +81,7 @@ public class GetFaceToken {
             String access_token = jsonObject.getString("access_token");
 
             //access_token存入redis
-            JedisUtils.setToken("access_token",access_token,30);
+            JedisUtils.setToken("access_token",access_token,30*24);
             return access_token;
         } catch (Exception e) {
             System.err.printf("获取token失败！");

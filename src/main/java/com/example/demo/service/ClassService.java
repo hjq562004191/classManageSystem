@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.ClassPOJO;
 import com.example.demo.model.ResultModel;
 
 /**

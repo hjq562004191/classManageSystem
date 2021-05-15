@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import com.example.demo.model.ResultModel;
 
 public interface UtilsService {

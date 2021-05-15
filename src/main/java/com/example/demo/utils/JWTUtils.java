@@ -19,7 +19,7 @@ public class JWTUtils {
      */
     private static String SECRET = "qiang";
     public static String createToken(int id, String username,
-                                      String type) throws Exception {
+                                      int type) throws Exception {
         // 签发时间
         Date iatDate = new Date();
 

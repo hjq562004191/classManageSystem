@@ -5,7 +5,7 @@ import com.example.demo.domain.PhoneNumber;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import okhttp3.*;
+import com.squareup.okhttp.*;
 
 
 import java.io.IOException;

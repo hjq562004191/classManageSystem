@@ -25,47 +25,58 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private Logger logger = Logger.getLogger(TokenInterceptor.class);
     // 设置不拦截的路径
-    private static final String[] IGNORE_URL = {"/user", "/class", "Form", "/utils",
-            "/admin","/judgephone","/getphonecode","/face","/hour"};
+    private static final String[] IGNORE_URL = {"/utils", "/judgephone", "/getphonecode", "/login", "/regist",
+            "/message"};
+//    private static final String[] IGNORE_URL = {"/user", "/class", "Form", "/utils",
+//            "/admin","/judgephone","/getphonecode","/face","/hour"};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
-            boolean flag = false;
-            String path = request.getServletPath();
-            for (String s : IGNORE_URL) {
-                if (path.contains(s)) {
-                    flag = true;
-                    break;
-                }
+        boolean flag = false;
+        String path = request.getServletPath();
+        for (String s : IGNORE_URL) {
+            if (path.contains(s)) {
+                flag = true;
+                break;
             }
-            if (!flag) {
-                String token = request.getHeader("token");
-                if (token == null) {
-                    // 跳转返回未登录
-                    request.getRequestDispatcher("/utils/notLoginIn").forward(request, response);
-                    logger.info("未登录");
+        }
+        if (!flag) {
+            String token = request.getHeader("token");
+            if (token == null) {
+                // 跳转返回未登录
+                request.getRequestDispatcher("/utils/notLoginIn").forward(request, response);
+                logger.info("未登录");
+            } else {
+                int id = 0;
+                int type = 0;
+                try {
+                    Map<String, Claim> map = JWTUtils.verifyToken(token);
+                    id = map.get("id").asInt();
+                    type = map.get("type").asInt();
+                    System.out.println(id);
+                } catch (Exception e) {
+                    request.getRequestDispatcher("/utils/logonExpires").forward(request, response);
+                    logger.info("登录过期");
+                }
+                // 在Redis中查询存储的token
+                String key = "";
+                if (type == 1) {
+                    key = "stu_" + id;
+                } else if (type == 2) {
+                    key = "tea_" + id;
+                }else if (type == 3) {
+                    key = "adm_" + id;
+                }
+                String sToken = JedisUtils.getToken(key);
+                if (!token.equals(sToken)) {
+                    // 登录异常，需要强制下线
+                    logger.info("登录异常");
+                    request.getRequestDispatcher("/utils/loginException").forward(request, response);
                 } else {
-                    int id = 0;
-                    try {
-                        Map<String, Claim> map = JWTUtils.verifyToken(token);
-                        id = map.get("id").asInt();
-                        request.setAttribute("id", id);
-                        System.out.println(id);
-                    } catch (Exception e) {
-                        request.getRequestDispatcher("/utils/logonExpires").forward(request, response);
-                        logger.info("登录过期");
-                    }
-                    // 在Redis中查询存储的token
-                    String sToken = JedisUtils.getToken(String.valueOf(id));
-                    if (!token.equals(sToken)) {
-                        // 登录异常，需要强制下线
-                        logger.info("登录异常");
-                        request.getRequestDispatcher("/utils/loginException").forward(request, response);
-                    } else {
-                        flag = true;
-                    }
+                    flag = true;
                 }
             }
-            return flag;
+        }
+        return flag;
     }
 }

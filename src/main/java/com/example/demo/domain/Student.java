@@ -15,6 +15,7 @@ public class Student implements Serializable {
     private String studentNum; //学号
     private String phoneNumber;  //电话
     private String studentPassWord;  //密码
+    private int faceTotal;  //人脸数量 最大一个
 
 
     public int getId() {
@@ -66,6 +67,14 @@ public class Student implements Serializable {
         this.className = className;
     }
 
+    public int getFaceTotal() {
+        return faceTotal;
+    }
+
+    public void setFaceTotal(int faceTotal) {
+        this.faceTotal = faceTotal;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -75,6 +84,7 @@ public class Student implements Serializable {
                 ", studentNum='" + studentNum + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", studentPassWord='" + studentPassWord + '\'' +
+                ", faceTotal=" + faceTotal +
                 '}';
     }
 }

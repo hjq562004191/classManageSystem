@@ -9,6 +9,14 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface AdminMapper {
+    @Select("select * from admin where phone_number = #{phone}")
+    @Results(id = "adminMap",value = {@Result(column = "id" ,property = "id"),
+            @Result(column = "admin_name" ,property = "adminName"),
+            @Result(column = "phone_number" ,property = "phoneNumber"),
+            @Result(column = "admin_pass_word" ,property = "adminPassWord")}
+    )
+    Admin findAdminByPhone(String phone);
+
     @Insert("insert into admin(admin_name, phone_number,admin_pass_word)" +
             " values(#{adminName}, #{phoneNumber}, #{adminPassWord})")
     @ResultMap("adminMap")
@@ -24,11 +32,5 @@ public interface AdminMapper {
     @Select("SELECT admin_name from admin where id = #{id}")
     String findAdminNameById(int id);
 
-    @Select("select * from admin where phone_number = #{phone}")
-    @Results(id = "adminMap",value = {@Result(column = "id" ,property = "id"),
-            @Result(column = "admin_name" ,property = "adminName"),
-            @Result(column = "phone_number" ,property = "phoneNumber"),
-            @Result(column = "admin_pass_word" ,property = "adminPassWord")}
-    )
-    Admin findAdminByPhone(String phone);
+
 }

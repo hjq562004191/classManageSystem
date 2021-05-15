@@ -15,6 +15,10 @@ public class ClassHour implements Serializable {
     private int createTime;
     private int endTime;
     private String islock;
+    private String teacherSign;
+    private int signTime;
+    private int realHour;
+    private String Switch;
 
     public int getId() {
         return id;
@@ -80,6 +84,38 @@ public class ClassHour implements Serializable {
         this.islock = islock;
     }
 
+    public String getTeacherSign() {
+        return teacherSign;
+    }
+
+    public void setTeacherSign(String teacherSign) {
+        this.teacherSign = teacherSign;
+    }
+
+    public int getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(int signTime) {
+        this.signTime = signTime;
+    }
+
+    public int getRealHour() {
+        return realHour;
+    }
+
+    public void setRealHour(int realHour) {
+        this.realHour = realHour;
+    }
+
+    public String getSwitch() {
+        return Switch;
+    }
+
+    public void setSwitch(String aSwitch) {
+        Switch = aSwitch;
+    }
+
     @Override
     public String toString() {
         return "ClassHour{" +
@@ -91,6 +127,10 @@ public class ClassHour implements Serializable {
                 ", createTime=" + createTime +
                 ", endTime=" + endTime +
                 ", islock='" + islock + '\'' +
+                ", teacherSign='" + teacherSign + '\'' +
+                ", signTime=" + signTime +
+                ", realHour=" + realHour +
+                ", Switch='" + Switch + '\'' +
                 '}';
     }
 }

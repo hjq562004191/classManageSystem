@@ -12,8 +12,19 @@ import java.util.List;
 @Mapper
 public interface StudentMapper {
 
-    @Insert("insert into student(student_name, class_name, student_num, phone_number,student_pass_word)" +
-            " values(#{studentName}, #{className}, #{studentNum}, #{phoneNumber}, #{studentPassWord})")
+    @Select("select * from student where phone_number = #{phone}")
+    @Results(id = "studentMap",value = {@Result(column = "id" ,property = "id"),
+            @Result(column = "student_name" ,property = "studentName"),
+            @Result(column = "class_name" ,property = "className"),
+            @Result(column = "student_num" ,property = "studentNum"),
+            @Result(column = "phone_number" ,property = "phoneNumber"),
+            @Result(column = "face_total" ,property = "faceTotal"),
+            @Result(column = "student_pass_word" ,property = "studentPassWord")}
+    )
+    Student findStudentByPhone(String phone);
+
+    @Insert("insert into student(student_name, class_name, student_num, phone_number,student_pass_word,face_total)" +
+            " values(#{studentName}, #{className}, #{studentNum}, #{phoneNumber}, #{studentPassWord} ,#{faceTotal})")
     @ResultMap("studentMap")
     int addStudent(Student student);
 
@@ -31,6 +42,9 @@ public interface StudentMapper {
     @ResultMap("studentMap")
     List<Student> getStudentList(@Param("page") int page,@Param("pageSize")int pageSize);
 
+    @Select("SELECT count(id) from student")
+    int getStuTotalNum();
+
     @Select("SELECT * from student where class_name = #{className} limit #{page} offset #{pageSize}")
     @ResultMap("studentMap")
     List<Student> getStudentListClass(@Param("page") int page,@Param("pageSize")int pageSize,
@@ -40,18 +54,8 @@ public interface StudentMapper {
     @ResultMap("studentMap")
     List<Student> getStudentListByClassName(String className);
 
-    @Select("select * from student where phone_number = #{phone}")
-    @Results(id = "studentMap",value = {@Result(column = "id" ,property = "id"),
-            @Result(column = "student_name" ,property = "studentName"),
-            @Result(column = "class_name" ,property = "className"),
-            @Result(column = "student_num" ,property = "studentNum"),
-            @Result(column = "phone_number" ,property = "phoneNumber"),
-            @Result(column = "student_pass_word" ,property = "studentPassWord")}
-    )
-    Student findStudentByPhone(String phone);
-
     @Update("UPDATE student SET student_name = #{studentName},student_num = #{studentNum}," +
-            "class_name = #{className},phone_number = #{phoneNumber} WHERE id = #{id}")
+            "class_name = #{className},phone_number = #{phoneNumber},student_pass_word = #{studentPassWord} WHERE id = #{id}")
     @ResultMap("studentMap")
     int changeStudent(Student student);
 
@@ -63,5 +67,10 @@ public interface StudentMapper {
     //班级被删
     @Update("UPDATE student SET class_name = '' WHERE class_name = #{className}")
     @ResultMap("studentMap")
-    int deleteClass(String className);
+    void deleteClass(String className);
+
+    //人脸数量更新
+    @Update("UPDATE student SET face_total = 1 WHERE id = #{id}")
+    @ResultMap("studentMap")
+    void updateFaceTotal(int id);
 }

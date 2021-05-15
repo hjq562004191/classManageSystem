@@ -1,6 +1,5 @@
 package com.example.demo.mapper;
 
-import com.example.demo.domain.Student;
 import com.example.demo.domain.Teacher;
 import org.apache.ibatis.annotations.*;
 
@@ -39,7 +38,7 @@ public interface TeacherMapper {
     Teacher findTeacherByPhone(String phone);
 
     @Update("UPDATE teacher SET teacher_name = #{teacherName}," +
-            "college = #{college},phone_number = #{phoneNumber} WHERE id = #{id}")
+            "college = #{college},phone_number = #{phoneNumber},teacher_pass_word = #{teacherPassWord} WHERE id = #{id}")
     @ResultMap("teacherMap")
     int changeTeacher(Teacher teacher);
 
@@ -49,6 +48,9 @@ public interface TeacherMapper {
     @Select("SELECT * from teacher limit #{page} offset #{pageSize}")
     @ResultMap("teacherMap")
     List<Teacher> getTeacherList(@Param("page") int page, @Param("pageSize")int pageSize);
+
+    @Select("SELECT count(id) from teacher")
+    int getTeacherTotalNum();
 
     @Select("SELECT * from teacher where class_hour > 0 limit #{page} offset #{pageSize}")
     @ResultMap("teacherMap")
@@ -62,4 +64,7 @@ public interface TeacherMapper {
 
     @Update("UPDATE teacher SET class_hour = (class_hour - #{classHour}) WHERE  id=#{id}")
     int jianClassHour(@Param("id")int id,@Param("classHour")int classHour);
+
+    @Update("UPDATE teacher SET class_name=#{className} WHERE  id=#{id}")
+    int addClassName(@Param("id")int id,@Param("className")String className);
 }

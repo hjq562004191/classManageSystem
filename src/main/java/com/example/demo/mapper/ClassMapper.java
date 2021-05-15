@@ -43,9 +43,17 @@ public interface ClassMapper {
     int addTotal(int classId);
 
     @Update("UPDATE classes SET teacher_id = #{ids} WHERE id = #{classId}")
-    int addTeacherId(@Param("classId")int classId,@Param("ids")String ids);
+    void addTeacherId(@Param("classId")int classId,@Param("ids")String ids);
 
     @Delete("DELETE from classes WHERE id = #{id}")
     boolean deleteClass(int id);
 
+    @Update("UPDATE classes SET teacher_id = #{ids} WHERE id = #{classId}")
+    void deleteTeacherId(@Param("classId")int classId,@Param("ids")String ids);
+
+    @Select("SELECT count(id) from classes")
+    int getClassTotalNum();
+
+    @Select("SELECT count(id) from classes where class_name = #{className}")
+    int getStuClassTotalNum(String className);
 }

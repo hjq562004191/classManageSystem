@@ -12,32 +12,32 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class UtilsServiceImpl implements UtilsService {
     @Override
     public ResultModel notLoginIn() {
-        return ResultBuilder.getFailure(-1, "未登录");
+        return ResultBuilder.getFailure(-9, "未登录");
     }
 
     @Override
     public ResultModel logonExpires() {
-        return ResultBuilder.getFailure(-1, "登录过期");
+        return ResultBuilder.getFailure(-9, "登录过期");
     }
 
     @Override
     public ResultModel loginException() {
-        return ResultBuilder.getFailure(-1, "登录异常");
+        return ResultBuilder.getFailure(-9, "登录异常");
     }
 
     @Override
     public ResultModel fileNotAllow() {
-        return ResultBuilder.getFailure(-1, "不支持的文件类型");
+        return ResultBuilder.getFailure(-9, "不支持的文件类型");
     }
 
     @Override
     public ResultModel adminNotLoginIn() {
-        return ResultBuilder.getFailure(-1, "管理员未登录");
+        return ResultBuilder.getFailure(-9, "管理员未登录");
     }
 
     @Override
     public ResultModel noJurisdiction() {
-        return ResultBuilder.getFailure(-1, "权限不足");
+        return ResultBuilder.getFailure(-9, "权限不足");
     }
 
 

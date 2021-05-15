@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/user/studentRegister", method = POST)
+    @RequestMapping(value = "/regist/studentRegister", method = POST)
     public ResultModel studentRegister(@Valid Student student, BindingResult bindingResult) {
         System.out.println(student.toString());
         // 如果注册的信息有问题
@@ -46,12 +46,12 @@ public class UserController {
         return userService.studentRegister(student);
     }
 
-    @RequestMapping(value = "/user/studentLogin", method = POST)
+    @RequestMapping(value = "/login/studentLogin", method = POST)
     public ResultModel studentLogin(String phone, String passWord) {
         return userService.studentLogin(phone, passWord);
     }
 
-    @RequestMapping(value = "/user/teacherRegister", method = POST)
+    @RequestMapping(value = "/regist/teacherRegister", method = POST)
     public ResultModel teacherRegister(@Valid Teacher teacher, BindingResult bindingResult) {
         // 如果注册的信息有问题
         if (bindingResult.hasErrors()) {
@@ -65,11 +65,11 @@ public class UserController {
         return userService.teacherRegister(teacher);
     }
 
-    @RequestMapping(value = "/user/teacherLogin", method = POST)
+    @RequestMapping(value = "/login/teacherLogin", method = POST)
     public ResultModel teacherLogin(String phone, String passWord) {
         return userService.teacherLogin(phone, passWord);
     }
-    @RequestMapping(value = "/user/adminRegister", method = POST)
+    @RequestMapping(value = "/regist/adminRegister", method = POST)
     public ResultModel adminRegister(@Valid Admin admin, BindingResult bindingResult) {
         // 如果注册的信息有问题
         if (bindingResult.hasErrors()) {
@@ -83,7 +83,7 @@ public class UserController {
         return userService.adminRegister(admin);
     }
 
-    @RequestMapping(value = "/user/adminLogin", method = POST)
+    @RequestMapping(value = "/login/adminLogin", method = POST)
     public ResultModel adminRogin(String phone, String passWord)  {
         return userService.adminLogin(phone, passWord);
     }
@@ -158,4 +158,8 @@ public class UserController {
         return userService.getTeacherById(id);
     }
 
+    @RequestMapping(value = "/user/deleteTeacherById", method = POST)
+    public ResultModel deleteTeacher(int id)  {
+        return userService.deleteTeacher(id);
+    }
 }

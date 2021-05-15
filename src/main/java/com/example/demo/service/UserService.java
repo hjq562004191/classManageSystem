@@ -5,11 +5,11 @@ import com.example.demo.domain.Student;
 import com.example.demo.domain.Teacher;
 import com.example.demo.model.ResultModel;
 
+
 /**
  * @Author JQiang
  * @create 2021/3/3 9:08
  */
-
 public interface UserService {
     //code是短信验证码
     ResultModel studentRegister(Student student);
@@ -53,4 +53,6 @@ public interface UserService {
     ResultModel changeTeacherAuthor(String phone,String lock);
 
     ResultModel getTeacherById(int id);
+
+    ResultModel deleteTeacher(int id);
 }

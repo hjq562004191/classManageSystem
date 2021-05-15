@@ -31,4 +31,12 @@ public class FaceController {
     public ResultModel searchFace(String image, String phone,int signId,int userId) {
         return faceService.searchFace(image,phone,signId,userId);
     }
+    @RequestMapping(value = "/face/teacherAddFace", method = POST)
+    public ResultModel teacherAddFace(String image, String phone) {
+        return faceService.teacherAddFace(image,phone);
+    }
+    @RequestMapping(value = "/face/teacherSearchFace", method = POST)
+    public ResultModel teacherSearchFace(String image, String phone,int hourId,int userId) {
+        return faceService.teacherSearchFace(image,phone,hourId,userId);
+    }
 }

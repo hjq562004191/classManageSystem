@@ -28,13 +28,13 @@ public class HourController {
     }
 
     @RequestMapping(value = "/hour/getClassHourList", method = POST)
-    public ResultModel getClassHourList(String phoneNumber) {
-        return hourService.getClassHourList(phoneNumber);
+    public ResultModel getClassHourList(String phoneNumber, int page, int pageSize) {
+        return hourService.getClassHourList(phoneNumber, page, pageSize);
     }
 
     @RequestMapping(value = "/hour/getTeacherClassHourList", method = POST)
-    public ResultModel getTeacherClassHourList(String phoneNumber) {
-        return hourService.getTeacherClassHourList(phoneNumber);
+    public ResultModel getTeacherClassHourList(String phoneNumber, int page, int pageSize) {
+        return hourService.getTeacherClassHourList(phoneNumber, page, pageSize);
     }
 
     @RequestMapping(value = "/hour/deleteSign", method = POST)
@@ -46,4 +46,25 @@ public class HourController {
     public ResultModel getStudentSign(int hourId) {
         return hourService.getStudentSign(hourId);
     }
+
+    @RequestMapping(value = "/hour/signStudent", method = POST)
+    public ResultModel signStudent(int signId,int userId) {
+        return hourService.signStudent(signId,userId);
+    }
+
+    @RequestMapping(value = "/hour/getAllClassHourList", method = POST)
+    public ResultModel getAllClassHourList(int page, int pageSize) {
+        return hourService.getAllClassHourList(page, pageSize);
+    }
+
+    @RequestMapping(value = "/hour/changeHourSwitch", method = POST)
+    public ResultModel changeHourSwitch(int hourId, String Switch) {
+        return hourService.changeHourSwitch(hourId,Switch);
+    }
+
+    @RequestMapping(value = "/hour/deleteHourById", method = POST)
+    public ResultModel deleteHourById(int id) {
+        return hourService.deleteHourById(id);
+    }
+
 }

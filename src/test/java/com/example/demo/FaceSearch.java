@@ -1,6 +1,9 @@
 package com.example.demo;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.demo.domain.Face.Root;
+import com.example.demo.domain.Face.User_list;
 import com.example.demo.utils.*;
 
 import java.io.IOException;
@@ -45,6 +48,16 @@ public class FaceSearch {
 
             String result = HttpUtil.post(url, accessToken, "application/json", param);
             System.out.println(result);
+            String scoreStr = result.substring(result.indexOf("\"score\":")+8,result.length()-5);
+            double score = Double.parseDouble(scoreStr);
+            System.out.println(score);
+
+            JSONObject jsStr = JSONObject.parseObject(result);
+            Root face = JSONObject.toJavaObject(jsStr,Root.class);
+            for (User_list user:
+            face.getResult().getUser_list()){
+
+            }
             return result;
         } catch (Exception e) {
             e.printStackTrace();
